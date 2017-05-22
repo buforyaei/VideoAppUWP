@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -31,19 +32,23 @@ namespace VideoStreamApp
 
         private async void ButtonConnect_OnClick(object sender, RoutedEventArgs e)
         {
-            _videoReciever = new VideoReciever(Image);
+            _videoReciever = new VideoReciever(Image1);
             await _videoReciever.Initialize(Host.Text);
             _videoReciever.StartListening();
         }
         private async void ButtonHost_OnClick(object sender, RoutedEventArgs e)
         {
-            _videoProvider = new VideoProvider(TextBlock);
+            _videoProvider = new VideoProvider(new TextBlock());
             await _videoProvider.InitializeProvider();
             //long s = 15040;
             //var bytes = new byte[2];
             //bytes = BitConverter.GetBytes((ushort)s);
             //var number = BitConverter.ToUInt16(bytes,0);
         }
-        
+
+        private void UIElement_OnDragOver(object sender, DragEventArgs e)
+        {
+           e.AcceptedOperation=DataPackageOperation.Move;
+        }
     }
 }
