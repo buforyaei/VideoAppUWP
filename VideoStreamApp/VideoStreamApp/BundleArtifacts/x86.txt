@@ -1,0 +1,2 @@
+MainPackage=C:\Users\tdragon\Documents\#SIiM\VideoAppUWP\VideoStreamApp\VideoStreamApp\bin\x86\Debug\VideoStreamApp_1.0.0.0_x86_Debug.appx
+SymbolPackage=C:\Users\tdragon\Desktop\VideoStreamApp_1.0.0.0_Debug_Test\VideoStreamApp_1.0.0.0_x86_Debug.appxsym

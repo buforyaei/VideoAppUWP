@@ -18,11 +18,12 @@ namespace VideoStreamApp
         private readonly StreamSocketListener _tcpListener;
         private StreamSocket _connectedSocket;
         private DataWriter _dataWriter;
-        private const string Port = "40404";
+        private string _port;
         private IRandomAccessStream _stream;
         private TextBlock Tb;
-        public VideoProvider(TextBlock tb)
+        public VideoProvider(TextBlock tb, string port )
         {
+            _port = port;
             Tb = tb;
             _tcpListener = new StreamSocketListener();
             _tcpListener.ConnectionReceived += OnConnected;
@@ -33,7 +34,7 @@ namespace VideoStreamApp
 
         public async Task InitializeProvider()
         {
-            await _tcpListener.BindEndpointAsync(null, Port);
+            await _tcpListener.BindEndpointAsync(null, _port);
             _captureElement = new MediaCapture();
             await _captureElement.InitializeAsync(
                 new MediaCaptureInitializationSettings());

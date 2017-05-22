@@ -19,7 +19,8 @@
                 VerticalAlignment="Stretch"
                 Name="ListView">
 
-                <ListViewItem Background ="LightGray" Margin="2">
+                <ListViewItem Background ="LightGray" Margin="2"  VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch">
                     <Image
                         Name="Image1"
                         
@@ -28,7 +29,8 @@
                         VerticalAlignment="Stretch"
                         HorizontalAlignment="Stretch"/>
                 </ListViewItem>
-                <ListViewItem  Background ="LightGray" Margin="2">
+                <ListViewItem  Background ="LightGray" Margin="2"  VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch">
                     <Image
                         Name="Image2"
                          Width="300"
@@ -41,13 +43,14 @@
                 Grid.Row="1"
                 VerticalAlignment="Stretch"
                 HorizontalAlignment="Stretch">
-                   
+
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                        
+
 
                     <Button 
                         Grid.Column="0"
@@ -63,7 +66,7 @@
                             </Ellipse>
                             <TextBlock 
                                 Foreground="White"
-                                Text="Connect"
+                                Text="Connect 1"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"/>
                         </Grid>
@@ -87,13 +90,52 @@
                                 HorizontalAlignment="Center"/>
                         </Grid>
                     </Button>
+                    <Button 
+                        Grid.Column="2"
+                        BorderThickness="0"
+                        Click="ButtonConnect2_OnClick" 
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch"
+                        Background="Transparent">
+                        <Grid>
+                            <Ellipse 
+                                Fill="MidnightBlue"
+                                Height="70" Width="70">
+                            </Ellipse>
+                            <TextBlock 
+                                Foreground="White"
+                                Text="Connect 2"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Button>
                 </Grid>
-                <TextBox 
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox 
+                    Grid.Column="0"
                     Name="Host"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Stretch"/>
+                    <TextBox 
+                    Grid.Column="1"
+                    Name="Port"
+                    Text="40404"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Stretch"/>
+                    <TextBox 
+                     Grid.Column="2"
+                    Name="Host2"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Stretch" Grid.ColumnSpan="2"/>
+                </Grid>
             </StackPanel>
         </Grid>
-        
+
     </Grid>
 </Page>

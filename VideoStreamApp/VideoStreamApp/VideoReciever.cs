@@ -16,12 +16,13 @@ namespace VideoStreamApp
     public class VideoReciever
     {
         private readonly StreamSocket _socket;
-        private const string Port = "40404";
+        private string _port;
         private readonly Image _image;
         //private readonly DataWriter _dataWriter;
         private readonly DataReader _dataReader;
-        public VideoReciever(Image image)
+        public VideoReciever(Image image, string port)
         {
+            _port = port;
             _image = image;
             _socket = new StreamSocket();
             _dataReader = new DataReader(_socket.InputStream);
@@ -29,7 +30,7 @@ namespace VideoStreamApp
         }
         public async Task Initialize(string host)
         {
-            await _socket.ConnectAsync(new HostName(host), Port);
+            await _socket.ConnectAsync(new HostName(host), _port);
         }
 
         public async void StartListening()

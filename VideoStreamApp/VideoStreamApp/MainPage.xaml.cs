@@ -24,7 +24,9 @@ namespace VideoStreamApp
     public sealed partial class MainPage : Page
     {
         private VideoProvider _videoProvider;
-        private VideoReciever _videoReciever;
+        private VideoReciever _videoReciever1;
+        private VideoReciever _videoReciever2;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -32,23 +34,21 @@ namespace VideoStreamApp
 
         private async void ButtonConnect_OnClick(object sender, RoutedEventArgs e)
         {
-            _videoReciever = new VideoReciever(Image1);
-            await _videoReciever.Initialize(Host.Text);
-            _videoReciever.StartListening();
+            _videoReciever1 = new VideoReciever(Image1, "40404");
+            await _videoReciever1.Initialize(Host.Text);
+            _videoReciever1.StartListening();
         }
         private async void ButtonHost_OnClick(object sender, RoutedEventArgs e)
         {
-            _videoProvider = new VideoProvider(new TextBlock());
+            _videoProvider = new VideoProvider(new TextBlock(), Port.Text);
             await _videoProvider.InitializeProvider();
-            //long s = 15040;
-            //var bytes = new byte[2];
-            //bytes = BitConverter.GetBytes((ushort)s);
-            //var number = BitConverter.ToUInt16(bytes,0);
+        }
+        private async void ButtonConnect2_OnClick(object sender, RoutedEventArgs e)
+        {
+            _videoReciever2 = new VideoReciever(Image2, "40405");
+            await _videoReciever2.Initialize(Host2.Text);
+            _videoReciever2.StartListening();
         }
 
-        private void UIElement_OnDragOver(object sender, DragEventArgs e)
-        {
-           e.AcceptedOperation=DataPackageOperation.Move;
-        }
     }
 }
