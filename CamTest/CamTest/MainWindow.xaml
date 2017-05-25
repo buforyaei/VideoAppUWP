@@ -1,0 +1,68 @@
+﻿<Window x:Class="CamTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CamTest"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Image 
+            Grid.Row="0" Name="Image"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"/>
+        <Grid Grid.Row="1" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button 
+                BorderThickness="0"
+                Margin="8"
+                Grid.Column="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Background="Transparent"
+                Foreground="White"
+                Click="ButtonBase_OnClick">
+                <Grid>
+                    <Ellipse 
+                       Fill="DodgerBlue"
+                       Height="70"
+                       Width="70"/>
+                    <TextBlock 
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="Host"/>
+                </Grid>
+            </Button>
+            <Button 
+                BorderThickness="0"
+                Margin="8"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Background="Transparent"
+                Foreground="White"
+                Click="ButtonExit_OnClick">
+                <Grid>
+                    <Ellipse 
+                       Fill="IndianRed"
+                       Height="70"
+                       Width="70"/>
+                    <TextBlock 
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="Leave"/>
+                </Grid>
+            </Button>
+
+            <TextBox Grid.Column="2" Height="40"  Width="120" Name="IpTextBox" Opacity="0.7"/>
+        </Grid>
+    </Grid>
+</Window>
