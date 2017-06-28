@@ -19,6 +19,9 @@ namespace TextUwpClient
         private DataReader _dataReader;
         private ImageSource _imageSource;
 
+        private IWebSocket _webSocket;
+
+
         public ImageSource ImageSource
         {
             get { return _imageSource; }
@@ -38,6 +41,8 @@ namespace TextUwpClient
         {
             _connectedSocket = args.Socket;
             _dataReader = new DataReader(_connectedSocket.InputStream);
+            _webSocket = new StreamWebSocket();
+            
             StartListening();
         }
 
