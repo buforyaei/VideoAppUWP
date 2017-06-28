@@ -3,23 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CamTest"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="MainWindow" Height="650" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
         <Image 
-            Grid.Row="0" Name="Image"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"/>
+                 Grid.Row="0"
+                Name="Image"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"/>
+
         <Grid Grid.Row="1" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="70"/>
             </Grid.ColumnDefinitions>
             <Button 
                 BorderThickness="0"
@@ -32,7 +35,7 @@
                 Click="ButtonBase_OnClick">
                 <Grid>
                     <Ellipse 
-                       Fill="DodgerBlue"
+                       Fill="CadetBlue"
                        Height="70"
                        Width="70"/>
                     <TextBlock 
@@ -61,8 +64,8 @@
                         Text="Leave"/>
                 </Grid>
             </Button>
-
-            <TextBox Grid.Column="2" Height="40"  Width="120" Name="IpTextBox" Opacity="0.7"/>
+            <TextBox Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="40"  Name="IpTextBox" Opacity="0.7" Margin="4" Text="192.168.1.10" FontSize="18"/>
+            <TextBox Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="40"  Name="PortTextBox" Opacity="0.7" Margin="4" Text="40404" FontSize="18"/>
         </Grid>
     </Grid>
 </Window>

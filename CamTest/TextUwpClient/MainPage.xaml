@@ -5,6 +5,7 @@
     xmlns:local="using:TextUwpClient"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    RequestedTheme="Dark"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -12,68 +13,41 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <StackPanel Grid.Row ="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Name="WaitingTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Waiting for connections..." />
+            <ProgressRing IsActive="True" VerticalAlignment="Center" HorizontalAlignment="Center" Name="ProgressRing"></ProgressRing>
+        </StackPanel>
         <ListView
+             Grid.Row ="0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Name="ListView">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid
-                        Height="120" Width="160"
                         Margin="2"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch">
                         <Border
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="LightGray">
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="LightGray">
                             <Image 
-                            Source="{Binding ImageSource}"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"/>
+                                Source="{Binding ImageSource}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"/>
                         </Border>
-                        
+
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.ItemsPanel>
+            <!--<ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsWrapGrid MaximumRowsOrColumns="2"></ItemsWrapGrid>
+                    <Grid></Grid>
                 </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            
-        </ListView>
-        <Image 
-            Grid.Row="0" Name="Image"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"/>
-        <!--<Grid Grid.Row="1" VerticalAlignment="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Button 
-                BorderThickness="0"
-                Margin="8"
-                Grid.Column="0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Background="Transparent"
-                Foreground="White"
-                >
-                <Grid>
-                    <Ellipse 
-                       Fill="DodgerBlue"
-                       Height="70"
-                       Width="70"/>
-                    <TextBlock 
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Text="Host"/>
-                </Grid>
-            </Button>
+            </ListView.ItemsPanel>-->
 
-            <TextBox Grid.Column="1" Height="40"  Width="120" Name="IpTextBox" Opacity="0.7"/>
-        </Grid>-->
+        </ListView>
+       
     </Grid>
 </Page>

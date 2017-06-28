@@ -1,37 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 using AForge.Video;
 using AForge.Video.DirectShow;
-using Image = System.Drawing.Image;
-using PixelFormat = System.Drawing.Imaging.PixelFormat;
-using Rectangle = System.Drawing.Rectangle;
-using Size = System.Drawing.Size;
 
 namespace CamTest
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private VideoCaptureDevice _device = new VideoCaptureDevice();
         public FilterInfoCollection LoaclWebCamsCollection;
@@ -49,7 +29,8 @@ namespace CamTest
             _device = new VideoCaptureDevice(LoaclWebCamsCollection[0].MonikerString);
             
             _device.NewFrame += DeviceOnNewFrame;
-            
+            _device.Start();
+
 
         }
         private byte[] _frameInBytes;
@@ -59,52 +40,73 @@ namespace CamTest
             var converter = new ImageConverter();
             return (byte[]) converter.ConvertTo(img, typeof (byte[]));
         }
-
+        public bool ByteArrayToFile(string fileName, byte[] byteArray)
+        {
+            try
+            {
+                using (var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+                {
+                    fs.Write(byteArray, 0, byteArray.Length);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(@"Exception caught in process: " + ex);
+                return false;
+            }
+        }
         private void DeviceOnNewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            if (_ifShouldSend)
-            {
-                var imageBytes = ImageToByte(eventArgs.Frame);
-                _frameInBytes = imageBytes;
-                _socket.Send(new List<ArraySegment<byte>>
-                {
-                    new ArraySegment<byte>(
-                        BitConverter.GetBytes((int)_frameInBytes.Length))
-                });
-                _socket.Send(new List<ArraySegment<byte>>
-                {
-                    new ArraySegment<byte>(_frameInBytes)
-                });
-            }
+            var stream = new MemoryStream();
+            eventArgs.Frame.SaveJpeg(stream, 50);
+            var imageBytes = stream.GetBuffer();
             Dispatcher.Invoke(() =>
             {
-                Image.Source = BitmapToImageSource(eventArgs.Frame);
+                Image.Source = ByteToImageSource(imageBytes);
+            });
+            if (!_ifShouldSend) return;
+            _frameInBytes = imageBytes;
+            _socket.Send(new List<ArraySegment<byte>>
+            {
+                new ArraySegment<byte>(
+                    BitConverter.GetBytes(_frameInBytes.Length))
+            });
+            _socket.Send(new List<ArraySegment<byte>>
+            {
+                new ArraySegment<byte>(_frameInBytes)
             });
         }
-      
-        private static BitmapImage BitmapToImageSource(Image bitmap)
+
+        public static ImageSource ByteToImageSource(byte[] imageData)
         {
-            using (var memory = new MemoryStream())
-            {
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-                memory.Position = 0;
-                var bitmapimage = new BitmapImage();
-                bitmapimage.BeginInit();
-                bitmapimage.StreamSource = memory;
-                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapimage.EndInit();
-                return bitmapimage;
-            }
+            var biImg = new BitmapImage();
+            var ms = new MemoryStream(imageData);
+            biImg.BeginInit();
+            biImg.StreamSource = ms;
+            biImg.EndInit();
+            var imgSrc = (ImageSource) biImg;
+            return imgSrc;
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            _device.Start();
-            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            _socket.Connect("192.168.0.67",40404);
-            _ifShouldSend = true;
+            TryConnect();
         }
 
+        private void TryConnect()
+        {
+            try
+            {
+                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                _socket.Connect(IpTextBox.Text, int.Parse(PortTextBox.Text));
+                _ifShouldSend = true;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(@"Exception caught in process: " + ex);
+            }
+        }
         private void ButtonExit_OnClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
