@@ -7,6 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -34,26 +36,43 @@ namespace WSClient
 
         private async void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            var sws = new StreamWebSocket();
-            await sws.ConnectAsync(new Uri("ws://192.168.88.170:40404"));
-            StartSendHimData(sws.OutputStream);
+            var sws = new StreamSocket();
+            await sws.ConnectAsync(new HostName("192.168.1.4"),"40403");
+           
+            StartSendHimData(sws.InputStream);
 
         }
-        private async void StartSendHimData(IOutputStream output)
+        private async void StartSendHimData(IInputStream input)
         {
-            var random = new Random();
-
+            var streamReader = input.AsStreamForRead();
             while (true)
             {
                 await Task.Delay(500);
                 var bytes = new byte[4];
-                Debug.WriteLine(bytes[0] + bytes[1] + bytes[2] + bytes[3]);
-                random.NextBytes(bytes);
-                await output.WriteAsync(bytes.AsBuffer());
-                await output.FlushAsync();
+                await streamReader.ReadAsync(bytes, 0, 4);
+                var frameLengthInt =
+                    BitConverter.ToInt32(bytes, 0);
 
+                var frame = new byte[frameLengthInt];
+
+                await streamReader.ReadAsync(frame, 0,frame.Length);
+                Debug.WriteLine(frameLengthInt + "  " + frame.Length);
+                await streamReader.FlushAsync();
+                Image.Source = await ConvertBytesToBitmapImage(frame);
             }
         }
-       
+        private static async Task<BitmapImage> ConvertBytesToBitmapImage(byte[] bytes)
+        {
+            var image = new BitmapImage();
+            using (var stream = new InMemoryRandomAccessStream())
+            {
+                await stream.WriteAsync(bytes.AsBuffer());
+                stream.Seek(0);
+                await image.SetSourceAsync(stream);
+            }
+            return image;
+        }
+
+
     }
 }

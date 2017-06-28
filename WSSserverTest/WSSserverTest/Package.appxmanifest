@@ -27,5 +27,7 @@
     <Capability Name="internetClientServer" />
     <Capability Name="privateNetworkClientServer" />
     <uap3:Capability Name="remoteSystem" />
+    <DeviceCapability Name="webcam" />
+    <DeviceCapability Name="microphone" />
   </Capabilities>
 </Package>

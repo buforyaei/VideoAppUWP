@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.Media.Capture;
+using Windows.Media.MediaProperties;
+using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using IotWeb.Common;
 using IotWeb.Server;
 
@@ -32,34 +24,55 @@ namespace WSSserverTest
         public MainPage()
         {
             this.InitializeComponent();
-            var server = new SocketServer(40404);
-            
-            server.ServerStopped+=ServerOnServerStopped;
+            Loaded += OnLoaded;
+        }
+
+        private async void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var server = new SocketServer(40403);
+            server.ServerStopped += ServerOnServerStopped;
             server.ConnectionRequested = ConnectionRequested;
             server.Start();
-            var port = server.Port;
+            _captureElement = new MediaCapture();
+            await _captureElement.InitializeAsync(
+                new MediaCaptureInitializationSettings());
         }
-
-
+        
         private void ConnectionRequested(ISocketServer sender, string hostname, Stream input, Stream output)
         {
-            Listen(input);
+            HostStream(output);
         }
 
-        private async void Listen(Stream dr)
+        private InMemoryRandomAccessStream _stream;
+        private MediaCapture _captureElement;
+        private async void HostStream(Stream os)
         {
+            
             while (true)
             {
-                var buffer = new byte[4];
-                await dr.ReadAsync(buffer, 0,4);
-                await dr.FlushAsync();
-                await Task.Delay(500);
-                Debug.WriteLine(buffer[0] + buffer[1] + buffer[2] + buffer[3] );
-                
+                _stream = new InMemoryRandomAccessStream();
+                await _captureElement.CapturePhotoToStreamAsync(
+                ImageEncodingProperties.CreateJpeg(), _stream);
+
+                var size = BitConverter.GetBytes((int)_stream.Size);
+                await os.WriteAsync(size,0,size.Length);
+                var byteArray = ToByteArray(_stream.AsStream());
+                await os.WriteAsync(byteArray,0,byteArray.Length);
+               
+                await Task.Delay(50);
+                Debug.WriteLine(byteArray.Length + " " + size);
             }
-
-
         }
+
+        public static byte[] ToByteArray(Stream stream)
+        {
+            stream.Position = 0;
+            byte[] buffer = new byte[stream.Length];
+            for (int totalBytesCopied = 0; totalBytesCopied < stream.Length;)
+                totalBytesCopied += stream.Read(buffer, totalBytesCopied, Convert.ToInt32(stream.Length) - totalBytesCopied);
+            return buffer;
+        }
+
         private void ServerOnServerStopped(IServer server)
         {
             Debugger.Break();
