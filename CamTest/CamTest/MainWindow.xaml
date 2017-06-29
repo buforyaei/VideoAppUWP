@@ -11,7 +11,11 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <ListView Name="ListView">
-            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                     <ContentControl Content="{Binding}" Height="250" Width="350"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
       
         <Grid Grid.Row="1" VerticalAlignment="Bottom">

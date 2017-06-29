@@ -18,10 +18,9 @@ namespace TextUwpClient
         private StreamSocket _connectedSocket;
         private DataReader _dataReader;
         private ImageSource _imageSource;
-
         private IWebSocket _webSocket;
 
-
+        public string Port { get; set; }
         public ImageSource ImageSource
         {
             get { return _imageSource; }
@@ -30,6 +29,7 @@ namespace TextUwpClient
 
         public ListenerModel(string port)
         {
+            Port = port;
             _tcpListener = new StreamSocketListener();
             _tcpListener.ConnectionReceived += OnConnected;
             Task.Run(() => _tcpListener.BindEndpointAsync(null, port));
@@ -44,6 +44,13 @@ namespace TextUwpClient
             _webSocket = new StreamWebSocket();
             
             StartListening();
+            UpdatePortInfo("occupied");
+        }
+
+        public async void UpdatePortInfo(string status)
+        {
+            await WebServiceClient.Instance.UpdatePortStatus(Port, status);
+
         }
 
         public async void StartListening()
@@ -64,6 +71,7 @@ namespace TextUwpClient
 
                     await _dataReader.LoadAsync(frameLengthInt);
                     _dataReader.ReadBytes(frame);
+
                     Debug.WriteLine(frameLengthInt + "  " + frame.Length);
                     await 
                         CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
@@ -72,13 +80,11 @@ namespace TextUwpClient
                             ImageSource = await Utlis.ConvertBytesToBitmapImage(frame);
                         }
                     );
-                   
-
-
                 }
                 catch(Exception e)
                 {
                     Debug.WriteLine(e.Message);
+                    UpdatePortInfo("false");
                 }
 
 

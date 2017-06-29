@@ -22,6 +22,11 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Name="ListView">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <local:UniformGrid Columns="2"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid

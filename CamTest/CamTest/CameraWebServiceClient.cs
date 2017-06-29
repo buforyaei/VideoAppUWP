@@ -33,22 +33,23 @@ namespace CamTest
                 var response = await Client.Execute(request);
                 var resultString = Encoding.UTF8.GetString(response.RawBytes, 0,
                 response.RawBytes.Length);
+                if (resultString.Contains("no available ports"))
+                {
+                    Debug.WriteLine("no available ports");
+                    return null;
+                }
                 try
                 {
-                    var result = JsonConvert.DeserializeObject<ConnectionData>(resultString);
-                    return result;
+                    var resultArray = (resultString.Substring(2).Replace("\"]",string.Empty).Split(new[] {':'}));
+                    return new ConnectionData
+                    {
+                        Ip = resultArray[0],
+                        Port = resultArray[1]
+                    };
                 }
                 catch (Exception e)
                 {
-                    if (resultString.Contains("no available ports"))
-                    {
-                        Debug.WriteLine("no available ports");
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Error on de serializing connection data: " + e.Message);
-                    }
-                    
+                    Debug.WriteLine("Error on de serializing connection data: " + e.Message);
                 }
                 return null;
             }

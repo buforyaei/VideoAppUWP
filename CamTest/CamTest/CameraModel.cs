@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using System.Windows;
@@ -30,24 +31,32 @@ namespace CamTest
 
         private void VideoDeviceOnNewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            var stream = new MemoryStream();
-            eventArgs.Frame.SaveJpeg(stream, 50);
-            var imageBytes = stream.GetBuffer();
-            Application.Current.Dispatcher.Invoke(() =>
+            try
             {
-                ImageControl.Source = Helpers.ByteToImageSource(imageBytes);
-            });
-            if (!_ifConnected) return;
-            _frameInBytes = imageBytes;
-            Socket.Send(new List<ArraySegment<byte>>
+                var stream = new MemoryStream();
+                eventArgs.Frame.SaveJpeg(stream, 50);
+                var imageBytes = stream.GetBuffer();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ImageControl.Source = Helpers.ByteToImageSource(imageBytes);
+                });
+                if (!_ifConnected) return;
+                _frameInBytes = imageBytes;
+                Socket.Send(new List<ArraySegment<byte>>
+                {
+                    new ArraySegment<byte>(
+                        BitConverter.GetBytes(_frameInBytes.Length))
+                });
+                Socket.Send(new List<ArraySegment<byte>>
+                {
+                    new ArraySegment<byte>(_frameInBytes)
+                });
+            }
+            catch(Exception ex)
             {
-                new ArraySegment<byte>(
-                    BitConverter.GetBytes(_frameInBytes.Length))
-            });
-            Socket.Send(new List<ArraySegment<byte>>
-            {
-                new ArraySegment<byte>(_frameInBytes)
-            });
+                Debug.WriteLine("Error on sending frame" + ex);
+
+            }
         }
 
         public void TryConnect(string ip, int port)
@@ -61,7 +70,7 @@ namespace CamTest
             catch (Exception ex)
             {
                 _ifConnected = false;
-                Console.WriteLine(@"Exception caught in process: " + ex);
+                Debug.WriteLine(@"Exception caught in process: " + ex);
             }
         }
 

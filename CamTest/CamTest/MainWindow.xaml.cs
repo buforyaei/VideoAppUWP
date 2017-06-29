@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using AForge.Video;
@@ -35,7 +36,6 @@ namespace CamTest
         {
             var loaclWebCamsCollection = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             for (var i = 0; i< loaclWebCamsCollection.Count; i++)
-
             {
                 var data = await CameraWebServiceClient.Instance.GetConnectionData();
                 if (data != null)
@@ -46,6 +46,7 @@ namespace CamTest
                         new VideoCaptureDevice(loaclWebCamsCollection[i].MonikerString), image);
                     cameraModel.TryConnect(data.Ip,int.Parse(data.Port));
                     Cameras.Add(cameraModel);
+                    await Task.Delay(500);
                 } 
             }  
         }
