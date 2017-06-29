@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CamTest", "CamTest\CamTest.csproj", "{A9834FDD-96C7-4B23-AD01-3DABC6675077}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoClient", "CamTest\VideoClient.csproj", "{A9834FDD-96C7-4B23-AD01-3DABC6675077}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextUwpClient", "TextUwpClient\TextUwpClient.csproj", "{C007909D-7379-4426-BC2D-6A51E02B0E0E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoServer", "TextUwpClient\VideoServer.csproj", "{C007909D-7379-4426-BC2D-6A51E02B0E0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

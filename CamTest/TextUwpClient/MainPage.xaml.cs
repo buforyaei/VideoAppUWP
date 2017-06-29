@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using Windows.Foundation.Metadata;
+using Windows.Networking.Connectivity;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -17,9 +21,24 @@ namespace TextUwpClient
            InitializeComponent();
            Loaded += OnLoaded;
         }
+        private string GetLocalIp()
+        {
+            var icp = NetworkInformation.GetInternetConnectionProfile();
 
+            if (icp?.NetworkAdapter == null) return null;
+            var hostname =
+                NetworkInformation.GetHostNames()
+                    .SingleOrDefault(
+                        hn =>
+                            hn.IPInformation?.NetworkAdapter != null && hn.IPInformation.NetworkAdapter.NetworkAdapterId
+                            == icp.NetworkAdapter.NetworkAdapterId);
+
+            // the ip address
+            return hostname?.CanonicalName;
+        }
         private async void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
+            var ip = GetLocalIp();
             _listenerModelList = new List<ListenerModel>
             {
                 new ListenerModel("40404"),

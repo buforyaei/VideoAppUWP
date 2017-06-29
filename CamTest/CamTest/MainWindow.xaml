@@ -10,13 +10,10 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <Image 
-                 Grid.Row="0"
-                Name="Image"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"/>
-
+        <ListView Name="ListView">
+            
+        </ListView>
+      
         <Grid Grid.Row="1" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
