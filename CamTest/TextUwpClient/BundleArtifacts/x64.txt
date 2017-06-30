@@ -1,0 +1,2 @@
+MainPackage=C:\Users\tdragon\Documents\#SIiM\VideoAppUWP\CamTest\TextUwpClient\bin\x64\Debug\VideoServer_1.0.0.0_x64_Debug.appx
+SymbolPackage=C:\Users\tdragon\Desktop\VideoServer_1.0.0.0_Debug_Test\VideoServer_1.0.0.0_x64_Debug.appxsym

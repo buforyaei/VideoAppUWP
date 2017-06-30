@@ -4,13 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="500">
+        Title="MainWindow" Height="250" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <ListView Name="ListView">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"></StackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
                      <ContentControl Content="{Binding}" Height="250" Width="350"/>
@@ -18,7 +29,7 @@
             </ListView.ItemTemplate>
         </ListView>
       
-        <Grid Grid.Row="1" VerticalAlignment="Bottom">
+        <!--<Grid Grid.Row="1" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -66,7 +77,7 @@
                 </Grid>
             </Button>
             <TextBox Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="40"  Name="IpTextBox" Opacity="0.7" Margin="4" Text="192.168.1.10" FontSize="18"/>
-            <TextBox Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="40"  Name="PortTextBox" Opacity="0.7" Margin="4" Text="40404" FontSize="18"/>
-        </Grid>
+            <TextBox Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="40"  Name="PortTextBox" Opacity="0.7" Margin="4" Text="40404" FontSize="18"/>-->
+        <!--</Grid>-->
     </Grid>
 </Window>
