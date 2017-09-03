@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row ="0" VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock Name="WaitingTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Waiting for connections..." />
-            <ProgressRing IsActive="True" VerticalAlignment="Center" HorizontalAlignment="Center" Name="ProgressRing"></ProgressRing>
+            <ProgressRing Margin="4" IsActive="True" VerticalAlignment="Center" HorizontalAlignment="Center" Name="ProgressRing"></ProgressRing>
         </StackPanel>
         <ListView
              Grid.Row ="0"

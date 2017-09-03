@@ -5,8 +5,6 @@ using Windows.ApplicationModel.Core;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using GalaSoft.MvvmLight;
 
@@ -50,7 +48,6 @@ namespace TextUwpClient
         public async void UpdatePortInfo(string status)
         {
             await WebServiceClient.Instance.UpdatePortStatus(Port, status);
-
         }
 
         public async void StartListening()

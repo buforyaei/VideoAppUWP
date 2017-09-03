@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using AForge.Video;
 using AForge.Video.DirectShow;
 
 namespace CamTest
@@ -49,11 +45,6 @@ namespace CamTest
                     await Task.Delay(500);
                 } 
             }  
-        }
-        
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            
         }
         
         private void ButtonExit_OnClick(object sender, RoutedEventArgs e)

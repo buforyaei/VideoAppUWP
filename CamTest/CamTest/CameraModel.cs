@@ -5,7 +5,6 @@ using System.IO;
 using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 using AForge.Video;
 using AForge.Video.DirectShow;
 
